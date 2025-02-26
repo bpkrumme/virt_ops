@@ -27,3 +27,4 @@
         state: absent
         name: "{{ virt_ops_vm_name }}"
         namespace: "{{ virt_ops_vm_namespace }}"
+        wait: true

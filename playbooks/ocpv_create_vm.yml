@@ -16,7 +16,7 @@
           users:
           - name: "{{ virt_ops_ocp_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
             user:
-              token: "{{ virt_ops_ocp_cluster_bearer_token }}"
+              token: "{{ virt_ops_ocp_cluster_token }}"
         state: present
         name: "{{ virt_ops_vm_name }}"
         namespace: "{{ virt_ops_vm_namespace }}"

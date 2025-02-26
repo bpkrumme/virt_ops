@@ -17,7 +17,13 @@
           - name: "{{ virt_ops_ocp_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
             user:
               token: "{{ virt_ops_ocp_cluster_token }}"
-          current-context: "{{virt_ops_vm_namespace }}{{ virt_ops_ocp_cluster_name }}/{{ virt_ops_ocp_cluster_user }}"
+          contexts:
+          - context:
+              cluster: "{{ virt_ops_cluster_name }}"
+              namespace: "{{ virt_ops_vm_namespace }}"
+              user: "{{ virt_ops_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
+            name: "{{ virt_ops_vm_namespace }}/{{ virt_ops_ocp_cluster_name }}/{{ virt_ops_cluster_user }}"
+          current-context: "{{ virt_ops_vm_namespace }}{{ virt_ops_ocp_cluster_name }}/{{ virt_ops_ocp_cluster_user }}"
         state: present
         name: "{{ virt_ops_vm_name }}"
         namespace: "{{ virt_ops_vm_namespace }}"

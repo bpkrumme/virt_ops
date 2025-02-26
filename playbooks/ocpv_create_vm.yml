@@ -53,7 +53,7 @@
                 userData: |-
                   #cloud-config
                   user: cloud-user
-                  password: "{{ virt_ops_vm_cloud-user_password }}"
+                  password: "{{ virt_ops_vm_password }}"
                   chpasswd: { expire: False }
               name: cloudinitdisk
           networks:

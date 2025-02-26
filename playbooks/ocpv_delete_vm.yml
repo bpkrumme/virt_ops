@@ -1,0 +1,29 @@
+---
+- name: Delete a Virtual Machine in OpenShift Virtualization
+  hosts: localhost
+  tasks:
+    - name: Delete a VM
+      redhat.openshift_virtualization.kubevirt_vm:
+        kubeconfig:
+          apiVersion: v1
+          clusters:
+          - cluster:
+              insecure-skip-tls-verify: true
+              server: "{{ virt_ops_ocp_cluster_api_url }}"
+            name: "{{ virt_ops_ocp_cluster_name }}"
+          kind: Config
+          preferences: {}
+          users:
+          - name: "{{ virt_ops_ocp_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
+            user:
+              token: "{{ virt_ops_ocp_cluster_token }}"
+          contexts:
+          - context:
+              cluster: "{{ virt_ops_ocp_cluster_name }}"
+              namespace: "{{ virt_ops_vm_namespace }}"
+              user: "{{ virt_ops_ocp_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
+            name: "{{ virt_ops_vm_namespace }}/{{ virt_ops_ocp_cluster_name }}/{{ virt_ops_ocp_cluster_user }}"
+          current-context: "{{ virt_ops_vm_namespace }}/{{ virt_ops_ocp_cluster_name }}/{{ virt_ops_ocp_cluster_user }}"
+        state: absent
+        name: "{{ virt_ops_vm_name }}"
+        namespace: "{{ virt_ops_vm_namespace }}"

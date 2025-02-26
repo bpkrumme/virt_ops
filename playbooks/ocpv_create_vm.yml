@@ -1,0 +1,63 @@
+---
+- name: Create a Virtual Machine in OpenShift Virtualization
+  hosts: localhost
+  tasks:
+    - name: Create a VM
+      redhat.openshift_virtualization.kubevirt_vm:
+        kubeconfig:
+          apiVersion: v1
+          clusters:
+          - cluster:
+              insecure-skip-tls-verify: true
+              server: "{{ virt_ops_ocp_cluster_api_url }}"
+            name: "{{ virt_ops_ocp_cluster_name }}"
+          kind: Config
+          preferences: {}
+          users:
+          - name: "{{ virt_ops_ocp_cluster_user }}/{{ virt_ops_ocp_cluster_name }}"
+            user:
+              token: "{{ virt_ops_ocp_cluster_bearer_token }}"
+        state: present
+        name: "{{ virt_ops_vm_name }}"
+        namespace: "{{ virt_ops_vm_namespace }}"
+        data_volume_templates:
+          - metadata:
+              name: "{{ virt_ops_vm_name }}"
+            spec:
+              sourceRef:
+                kind: DataSource
+                name: "{{ virt_ops_vm_source_datasource }}"
+                namespace: "{{ virt_ops_vm_source_namespace }}"
+              storage:
+                resources:
+                  requests:
+                    storage: "{{ virt_ops_vm_disk_size }}"
+        spec:
+          domain:
+            cpu:
+              cores: 1
+              sockets: "{{ virt_ops_vm_cpus }}"
+              threads: 1
+            memory:
+              guest: "{{ virt_ops_vm_memory }}"
+            devices:
+              interfaces:
+                - bridge: {}
+                  model: virtio
+                  name: default
+          volumes:
+            - dataVolume:
+                name: "{{ virt_ops_vm_name }}"
+              name: rootdisk
+            - cloudInitNoCloud:
+                userData: |-
+                  #cloud-config
+                  user: cloud-user
+                  password: "{{ virt_ops_vm_cloud-user_password }}"
+                  chpasswd: { expire: False }
+              name: cloudinitdisk
+          networks:
+            - name: default
+              multus:
+                networkName: "{{ virt_ops_vm_network_name }}"
+        wait: true

@@ -1,0 +1,7 @@
+- name: Delete a virtual machine
+  hosts: localhost
+  tasks:
+    - name: Delete VM
+      redhat.openshift.k8s:
+        state: absent
+        template: ../templates/bklab-vm-delete.yml

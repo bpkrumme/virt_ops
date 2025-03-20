@@ -1,0 +1,5 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: {{ virt_ops_vm_name }}
+  namespace: bklab-vms

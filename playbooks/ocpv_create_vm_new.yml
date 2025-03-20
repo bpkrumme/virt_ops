@@ -1,0 +1,7 @@
+- name: Create a virtual machine
+  hosts: localhost
+  tasks:
+    - name: Create VM
+      redhat.openshift.k8s:
+        state: present
+        template: ../templates/bklab-rhel9-template.yml

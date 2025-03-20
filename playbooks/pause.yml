@@ -1,6 +1,6 @@
 ---
 - name: Pause
-  hosts: all
+  hosts: localhost
   become: false
   tasks:
     - name: Pause for 90 seconds

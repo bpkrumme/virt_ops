@@ -18,7 +18,7 @@ spec:
           resources:
             requests:
               storage: {{ virt_ops_vm_disk_size }}
-  running: true
+  runStrategy: Always
   template:
     spec:
       accessCredentials:

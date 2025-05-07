@@ -1,5 +1,5 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: {{ virt_ops_vm_name }}
+  name: {{ vm_name }}
   namespace: {{ virt_ops_vm_namespace }}

@@ -8,7 +8,7 @@ spec:
     - apiVersion: cdi.kubevirt.io/v1beta1
       kind: DataVolume
       metadata:
-        name: {{ virt_ops_vm_name }}
+        name: {{ vm_name }}
       spec:
         sourceRef:
           kind: DataSource
@@ -68,7 +68,7 @@ spec:
       terminationGracePeriodSeconds: 180
       volumes:
         - dataVolume:
-            name: {{ virt_ops_vm_name }}
+            name: {{ vm_name }}
           name: rootdisk
         - cloudInitNoCloud:
             userData: |

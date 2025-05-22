@@ -1,7 +1,7 @@
 ---
 schemaVersion: 2.2.2
 metadata:
-  name: satellite_ops
+  name: virt_ops
 components:
   - name: tooling-container
     container:
@@ -13,5 +13,5 @@ components:
       args: ['tail', '-f', '/dev/null']
       env:
         - name: 'ANSIBLE_COLLECTIONS_PATH'
-          value: '~/.ansible/collections:/usr/share/ansible/collections:/projects/satellite-ops/collections'
+          value: '~/.ansible/collections:/usr/share/ansible/collections:/projects/virt-ops/collections'
 ...

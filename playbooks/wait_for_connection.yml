@@ -1,0 +1,9 @@
+---
+- name: Wait for systems to become available
+  hosts: "{{ vm_name | default('none') }}"
+  become: false
+  gather_facts: false
+  pre_tasks:
+    - name: Wait for systems to become available
+      ansible.builtin.wait_for_connection:
+        timeout: 900

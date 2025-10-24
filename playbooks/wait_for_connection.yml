@@ -1,6 +1,6 @@
 ---
 - name: Wait for systems to become available
-  hosts: "{{ vm_name | default('none') }}"
+  hosts: '{{ vm_name | default("none") }}'
   become: false
   gather_facts: false
   tasks:

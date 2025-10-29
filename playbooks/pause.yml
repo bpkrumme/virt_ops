@@ -3,6 +3,6 @@
   hosts: localhost
   become: false
   tasks:
-    - name: Pause for 90 seconds
+    - name: Pause for 60 seconds
       ansible.builtin.pause:
         seconds: 60

@@ -6,4 +6,4 @@
     - name: Create VM
       redhat.openshift.k8s:
         state: present
-        template: ../templates/bklab-{{ virt_ops_vm_source_datasource }}template.yml
+        template: ../templates/bklab-{{ virt_ops_vm_source_datasource }}-template.yml

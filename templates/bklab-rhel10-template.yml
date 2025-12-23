@@ -1,0 +1,94 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: {{ vm_name }}
+  namespace: {{ virt_ops_vm_namespace }}
+spec:
+  dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: {{ vm_name }}
+      spec:
+        sourceRef:
+          kind: DataSource
+          name: {{ virt_ops_vm_source_datasource }}
+          namespace: {{ virt_ops_vm_source_namespace }}
+        storage:
+          resources:
+            requests:
+              storage: {{ virt_ops_vm_disk_size }}
+  runStrategy: Always
+  template:
+    spec:
+      accessCredentials:
+        - sshPublicKey:
+            propagationMethod:
+              qemuGuestAgent:
+                users:
+                  - cloud-user
+            source:
+              secret:
+                secretName: bklab-ansible-ssh-public-key
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 1
+          sockets: {{ virt_ops_vm_cpus }}
+          threads: 1
+        devices:
+          disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - bridge: {}
+              model: virtio
+              name: default
+          rng: {}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi: {}
+        memory:
+          guest: {{ virt_ops_vm_memory }}
+        resources: {}
+      networks:
+        - multus:
+            networkName: {{ virt_ops_vm_network_name }}
+          name: default
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - dataVolume:
+            name: {{ vm_name }}
+          name: rootdisk
+        - cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              user: cloud-user
+              password: {{ virt_ops_vm_password }}
+              chpasswd:
+                expire: false
+              ssh_authorized_keys: >-
+                ssh-rsa
+                {{ virt_ops_ocp_key_hash }}
+                ansible@idm.bk.lab
+              runcmd:
+                - setsebool -P virt_qemu_ga_manage_ssh on
+            networkData: |
+              ethernets:
+                enp1s0:
+                  addresses:
+                    - {{ virt_ops_ip_addr }}/{{ virt_ops_netmask }}
+                  gateway4: {{ virt_ops_gw_addr }}
+                  nameservers:
+                    search: [{{ virt_ops_dns_search}}]
+                    addresses: [{{ virt_ops_dns_1 }}, {{ virt_ops_dns_2 }}]
+              version: 2
+          name: cloudinitdisk

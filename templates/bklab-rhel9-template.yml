@@ -81,6 +81,13 @@ spec:
                 ssh-rsa
                 {{ virt_ops_ocp_key_hash }}
                 ansible@idm.bk.lab
+            networkData: |
+              ethernets:
+                eth0:
+                  addresses:
+                    - {{ virt_ops_ip_addr }}/{{ virt_ops_netmask }}
+                  gateway4: {{ virt_ops_gw_addr }}
+              version: 2
               runcmd:
                 - setsebool -P virt_qemu_ga_manage_ssh on
           name: cloudinitdisk

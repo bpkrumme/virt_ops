@@ -89,5 +89,8 @@ spec:
                   addresses:
                     - {{ virt_ops_ip_addr }}/{{ virt_ops_netmask }}
                   gateway4: {{ virt_ops_gw_addr }}
+                  nameservers:
+                    search: [bk.lab]
+                    addresses: [172.24.128.8, 172.24.128.9]
               version: 2
           name: cloudinitdisk

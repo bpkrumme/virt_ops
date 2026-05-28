@@ -5,5 +5,8 @@
   tasks:
     - name: Create VM
       redhat.openshift.k8s:
+        host: "{{ lookup('env', 'K8S_AUTH_HOST') }}"
+        api_key: "{{ lookup('env', 'K8S_AUTH_API_KEY') }}"
+        validate_certs: false
         state: present
         template: ../templates/bklab-{{ virt_ops_vm_source_datasource }}-template.yml
